@@ -43,3 +43,16 @@ def test_check_processing_count(spark):
     orders_df=read_orders(spark,"LOCAL")
     fil_count=filter_orders_generic(orders_df,"PROCESSING").count()
     assert fil_count==8275
+
+
+@pytest.mark.parametrize(
+    "status,count",
+    [("CLOSED",7556),
+    ("PENDING_PAYMENT",15030),
+    ("COMPLETE",22900),
+    ("PROCESSING",8275)]
+)
+def test_check_count(spark,status,count):
+    orders_df=read_orders(spark,"LOCAL")
+    fil_count=filter_orders_generic(orders_df,status).count()
+    assert fil_count==count
