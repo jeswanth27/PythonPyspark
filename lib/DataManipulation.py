@@ -10,3 +10,5 @@ def count_customer(orders_df):
 def count_order_stateind(customer_df):
 	return customer_df.filter("state='SC'").count()
 
+def filter_orders_generic(orders_df,status):
+	return orders_df.filter("order_status='{}'".format(status))
