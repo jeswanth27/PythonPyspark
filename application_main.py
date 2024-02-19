@@ -14,6 +14,11 @@ if __name__ == '__main__':
     print(f"Number of customer {count}")
     orders_filtered = DataManipulation.filter_closed_orders(orders_df)
     customers_df = DataReader.read_customers(spark,job_run_env)
+
+    # count customers for SC
+    count1=DataManipulation.count_order_stateind(customers_df)
+    print(f"count of state=SC orders {count1}")
+
     joined_df =DataManipulation.join_orders_customers(orders_filtered,customers_df)
     aggregated_results = DataManipulation.count_orders_state(joined_df)
     aggregated_results.show()
