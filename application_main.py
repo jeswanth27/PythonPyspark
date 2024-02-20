@@ -1,6 +1,8 @@
 import sys
-from lib import DataManipulation, DataReader, Utils
+from lib import DataManipulation, DataReader, Utils , logger
 from pyspark.sql.functions import *
+from lib.logger import Log4j
+
 if __name__ == '__main__':
     if len(sys.argv) < 1:
         print("Please specify the environment")
@@ -8,7 +10,8 @@ if __name__ == '__main__':
     job_run_env = 'PROD'
     print("Creating Spark Session")
     spark = Utils.get_spark_session(job_run_env)
-    print("Created Spark Session")
+    logger = Log4j(spark)
+    logger.warn("Created Spark Session")
     orders_df = DataReader.read_orders(spark,job_run_env)
     count=DataManipulation.count_customer(orders_df)
     print(f"Number of customer {count}")
@@ -22,4 +25,4 @@ if __name__ == '__main__':
     joined_df =DataManipulation.join_orders_customers(orders_filtered,customers_df)
     aggregated_results = DataManipulation.count_orders_state(joined_df)
     aggregated_results.show()
-    print("end of main")
+    logger.info("this is the end of main")
